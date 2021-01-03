@@ -143,11 +143,11 @@ async function createAccount(email, password) {
 
       return true;
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return false;
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     backToStart();
   }
 }

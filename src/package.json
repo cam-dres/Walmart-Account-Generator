@@ -2,6 +2,7 @@
   "dependencies": {
     "cli-progress": "^3.8.2",
     "faker": "^5.1.0",
+    "fs": "0.0.1-security",
     "inquirer": "^7.3.3",
     "nexe": "^3.3.7",
     "puppeteer": "^5.5.0",

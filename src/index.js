@@ -1,7 +1,8 @@
-const inquirer = require("inquirer");
 const fs = require("fs");
 const faker = require("faker");
+const inquirer = require("inquirer");
 const cliProgress = require("cli-progress");
+
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
@@ -12,13 +13,15 @@ const progressBar = new cliProgress.SingleBar(
   cliProgress.Presets.shades_classic
 );
 
-let generated = [];
+const walmartURL = "https://www.walmart.com/account/signup";
 
 let catchall = "";
-let taskAmount = 0;
+
+let generated = [];
+
 let upCount = 0;
 let taskTotal = 0;
-const walmartURL = "https://www.walmart.com/account/signup";
+let taskAmount = 0;
 
 function setProxies() {
   let proxyFile = fs.readFileSync("./proxies.txt", "utf8").split("\r\n");
@@ -37,29 +40,8 @@ function loadProxies() {
 }
 
 function selectProxy() {
-  return proxyList[faker.random.number({ min: 1, max: proxyList.length })];
+  return proxyList[faker.datatype.number({ min: 1, max: proxyList.length })];
 }
-
-console.log("Walmart Account Generator v1.0.0");
-loadProxies();
-inquirer
-  .prompt([
-    {
-      name: "catchall",
-      message: "What is your catchall? (Example: catchall.com)",
-    },
-    {
-      name: "taskAmount",
-      message: "How many accounts would you like to generate?",
-    },
-  ])
-  .then((rsp) => {
-    catchall = rsp.catchall;
-    taskAmount = rsp.taskAmount;
-    taskTotal = rsp.taskAmount;
-    progressBar.start(taskTotal, 0);
-    start();
-  });
 
 async function start() {
   if (isNaN(taskAmount) !== true) {
@@ -151,3 +133,26 @@ async function createAccount(email, password) {
     backToStart();
   }
 }
+
+console.log("Walmart Account Generator v1.0.0");
+
+loadProxies();
+
+inquirer
+  .prompt([
+    {
+      name: "catchall",
+      message: "What is your catchall? (Example: catchall.com)",
+    },
+    {
+      name: "taskAmount",
+      message: "How many accounts would you like to generate?",
+    },
+  ])
+  .then((rsp) => {
+    catchall = rsp.catchall;
+    taskAmount = rsp.taskAmount;
+    taskTotal = rsp.taskAmount;
+    progressBar.start(taskTotal, 0);
+    start();
+  });
